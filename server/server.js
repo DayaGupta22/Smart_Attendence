@@ -4,7 +4,7 @@ const { Server } = require('socket.io');
 const app = require('./app');
 const connectDB = require('./config/db');
 
-const PORT = process.env.PORT || 5000;
+const PORT =  5001;
 
 // Create HTTP server
 const server = http.createServer(app);
@@ -17,6 +17,7 @@ const io = new Server(server, {
     credentials: true,
   },
 });
+console.log(process.env.CLIENT_URL , PORT)
 
 // Make io accessible in controllers via req.app.get('io')
 app.set('io', io);

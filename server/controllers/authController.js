@@ -44,17 +44,20 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    
     if (!email || !password) return sendError(res, 'Email and password required', 400);
 
     const user = await User.findOne({ email });
+    
     if (!user || !user.isActive) return sendError(res, 'Invalid credentials', 401);
 
     const isMatch = await user.comparePassword(password);
     if (!isMatch) return sendError(res, 'Invalid credentials', 401);
 
     const accessToken = generateAccessToken({ id: user._id, role: user.role });
+    
     const refreshToken = generateRefreshToken({ id: user._id });
-
+    console.log(refreshToken)
     return sendSuccess(res, { accessToken, refreshToken, user: user.toSafeObject() }, 'Login successful');
   } catch (err) {
     return sendError(res, err.message);
